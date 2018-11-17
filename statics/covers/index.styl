@@ -1,0 +1,41 @@
+@import "../common"
+
+.covers-list
+  li
+    padding: 0;
+    list-style: none;
+    width: 200px;
+    height: 280px;
+    margin: 0.3em;
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #f5f5f5;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+    &:hover
+      -webkit-transform: translate3d(0,-2px,0);
+      transform: translate3d(0,-2px,0);
+      box-shadow: 0 5px 10px rgba(0,0,0,.1)
+
+    &.item
+      .hheader
+        height: 12.5em;
+        a
+          display: block
+        img
+          width: 100%
+      .hbody
+        padding: 0.6em
+      .cover-title
+        font-size: .9em;
+        a
+          color #333
+          text-decoration: none
+      .cover-descript
+        margin-top: 0.5em
+        font-size: .8em;
+        color: #757575;
+        line-height 1.3

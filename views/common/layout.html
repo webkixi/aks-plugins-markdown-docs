@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit" />
+    <title><%=title %></title>
+    <%-mycss%>
+  </head>
+  <body>
+    <div class="sticky-container  animated-faster" id="sticky-container-1">
+      <div class="sticky-item" id="sticky-item">
+        <div data-reactroot="" class="navtop">
+          <div class="flex-row" style="height: 100%; width: auto;">
+            <a href="/docs"> <img src="/myimgs/logo118-1.png"></a>
+            <a href="https://github.com/webkixi/aotoo-O"> <img src="/myimgs/github.png"></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="docs-container">
+      
+      <% block('content-tree', function(){ %>
+        <div class="docs-tree">
+          <%-tree%>
+        </div>
+      <% }) %>
+
+      <% block('content-content', function(){ %>
+        <div class="docs-content">
+          <div class="markdown-body clear">
+            <%-content%>
+          </div>
+        </div>
+      <% }) %>
+      
+      <% block('content-menu', function(){ %>
+        <div class='docs-right'>
+          <div class="docs-menu">
+            <%-menu%>
+          </div>
+        </div>
+      <% }) %>
+
+    </div>
+    
+    <%-myjs%>
+
+    <% block('site-count', function(){ %>
+      <div style="display: none">
+        <script src="https://s4.cnzz.com/z_stat.php?id=1257390996&web_id=1257390996" language="JavaScript"></script>
+      </div>
+    <% }) %>
+  </body>
+</html>
+

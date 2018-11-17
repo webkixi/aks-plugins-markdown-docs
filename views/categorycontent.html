@@ -1,0 +1,18 @@
+<div class="category-content-container markdown-body">
+  <div class="category-content">
+    <% if(imgs){ %>
+      <ul class="imgs">
+        <% 
+          var len = imgs.length
+          for(var ii=0; ii<len; ii++) {
+        %>
+          <li><%-imgs[ii]%></li>
+        <% } %>
+      </ul>
+    <% } %>
+
+    <% if (content) { %>
+      <%-content%>
+    <%}%>
+  </div>
+</div>

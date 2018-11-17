@@ -1,0 +1,17 @@
+<% extend('./common/layout.html') %>
+
+<% block('content-tree', function(){ %>
+  <div class="docs-tree">
+    <%-tree%>
+  </div>
+<% }) %>
+
+<% block('content-content', function(){ %>
+  <div class="docs-content">
+    <% 
+      include('./categorycontent.html', content) 
+    %>
+  </div>
+<% }) %>
+
+<% block('content-menu', function(){ %><% }) %>

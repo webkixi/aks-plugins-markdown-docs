@@ -1,0 +1,48 @@
+// @gutter-width: 16px;     // 1rem
+// @outer-margin: 32px;     // 2rem
+// @screen-xlt-min: 320px;  //20em
+// @screen-lt-min: 375px;   //23.4375em
+// @screen-xxs-min: 414px;  //25.875em
+// @screen-xs-min: 480px;   //30em
+// @screen-sm-min: 768px;   //48em
+// @screen-md-min: 1024px;  //64em
+// @screen-lg-min: 1200px;  //75em
+
+// ip6为基准 font-size=100px
+// 320*588   fz=85.333    ip5 dpr=2
+// 375*667   fz=100       ip6 dpr=2
+// 414*738   fz=110.4     ip6p  dpr=3
+// 768*1024  fz=204.8     iPad dpr=2
+// 1024*768  fz=136.533   pc dpr=1
+// 1200*768  fz=160       pc dpr=1
+
+// @media (min-width: 401px) and (max-width: 800px){}
+
+// Media queries
+mq-mobile   = "screen and (max-width: 479px)"
+mq-tablet   = "screen and (min-width: 480px) and (max-width: 767px)"
+mq-iPhones4 = "only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2)"
+mq-normal   = "screen and (min-width: 768px)"
+max-768     = "screen and (max-width: 768px)"
+max-1024     = "screen and (min-width: 768px) and (max-width: 1024px)"
+max-1220     = "screen and (min-width: 1024px) and (max-width: 1220px)"
+max-1440     = "screen and (min-width: 1220px) and (max-width: 1440px)"
+min-1220     = "screen and (min-width: 1220px)"
+
+docContainer(val)
+  .docs-container
+    width: val
+
+@media max-1024
+  docContainer(960)
+
+@media max-1220
+  docContainer(1170px)
+
+@media min-1220
+  docContainer(1170px)
+
+mediaMax1024(ursettingFun)
+  @media max-1024
+    ursettingFun()
+  

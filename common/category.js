@@ -59,7 +59,11 @@ module.exports = function category(
       home.imgs = undefined
     }
 
-    const treeStr = folderInfo.treeMenu
+    let treeStr = ''
+    if (tree.length > 1) {
+      treeStr = folderInfo.treeMenu
+    }
+
     const statics = asset.category.call(_ctx, staticDid)  // js css 静态资源
     const _renderData = {
       title: '分类页',

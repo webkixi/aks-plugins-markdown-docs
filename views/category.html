@@ -1,9 +1,11 @@
 <% extend('./common/layout.html') %>
 
 <% block('content-tree', function(){ %>
-  <div class="docs-tree">
-    <%-tree%>
-  </div>
+  <% if(tree){ %>
+    <div class="docs-tree">
+      <%-tree%>
+    </div>
+  <%}%>
 <% }) %>
 
 <% block('content-content', function(){ %>

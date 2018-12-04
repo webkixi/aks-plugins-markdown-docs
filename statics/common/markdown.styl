@@ -45,9 +45,11 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
   p
     // text-indent: 1em;
-    margin: 1em 0;
+    // margin: 1em 0;
+    margin: 0;
     &:first-child
-        text-indent: 0;
+      margin: 0
+      text-indent: 0;
 
   p, blockquote, ul, ol, dl, table, pre
     margin-top: 0;
@@ -129,8 +131,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     font-weight: 600;
     line-height: 1.4;
     margin: 1.6em 0 .6em;
-    // margin: 1.5em 0 0.25em;
-    color: #465E69;
+    color: #465E69
     clear: both
     &:first-child
       margin-top: 0;
@@ -148,7 +149,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
         .octicon-link
           display: inline-block;
 
-  fontsz = 0 28px 22px 18px 16px 14px 12px
+  fontsz = 0 28px 26px 18px 16px 14px 12px
   for font, i in fontsz
     if i > 0
       {h+i}
@@ -160,7 +161,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
             color: #a6a6a6;
             vertical-align: bottom;
         if i == 2
-          border-bottom: 3px solid #f08753
+          border-bottom: 1px solid #e1e1d1
           padding-bottom: 0.3em
 
 
@@ -243,8 +244,9 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   blockquote
     border-radius: 4px
     padding: 10px 15px;
-    color: #777;
-    background-color: #f2f2f2;
+    color: #383d41;
+    background-color: #F6F6F6;
+    border-color #d6d8db
     // box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
     // border: 1px solid ##8e8e8e
     // border-left: 0.5em solid #ddd;
@@ -253,11 +255,13 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     &:last-child
       margin-bottom: 0;
     &.tip
-      background-color: #DCF2FD;
-      color: #618ca0;
+      background-color: #d4edda;
+      color: #155724;
+      border-color #c3e6cb
     &.warning
-      background-color: #fbedb7;
-      color: #8c8466;
+      background-color: #fff3cd;
+      border-color #ffeeba
+      color: #856404;
 
   .highlight
     margin-bottom: 16px;

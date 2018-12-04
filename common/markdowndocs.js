@@ -51,99 +51,96 @@ export default class MarkdownDocs {
       title: rootobj.name,
       path: _dir,
       url: rootobj.name,
-      idf: 'root'
+      idf: 'root',
+      filetype: 'directory'
     }
 
     function loopDir($_dir, parent, parentObj){
       const $dir = $_dir+'/*'
-      const $_dirObj = path.parse($_dir)
       let home = getHomeStruct()
-      try {
-        const __dirs = glob.sync($dir)
-        for (let item of __dirs) {
-          const stat = fs.statSync(item) 
-          const obj = path.parse(item)
+      const __dirs = glob.sync($dir)
+      for (let item of __dirs) {
+        const stat = fs.statSync(item) 
+        const obj = path.parse(item)
+        
+        if (stat.isFile()) {
+
+          // 目录描述图
+          if (['.jpg', '.jpeg', '.png', '.gif'].indexOf(obj.ext)>-1) {
+            if (obj.name.indexOf('index')>-1) {
+              home.img = home.img ? home.img.concat(item) : [].concat(item)
+            }
+          }
+
+          // 目录配置文件
+          if (obj.name == 'config' && parent) {
+            parentObj.config = require(item)
+          }
+
+          if (obj.ext == '.md') {
+            const mdInfo = that.file(item)
+            
+            // 目录首页
+            if (obj.name == 'index') {
+              const _obj = path.parse(obj.dir)
+              home.title = mdInfo.title||obj.name
+              home.descript = mdInfo.descript
+              home.path = item
+              home.url = _obj.name
+              home.img = home.img ? home.img : mdInfo.img
+              home.imgs = mdInfo.imgs
+              home.exist = true
+              home.params = mdInfo.params
+            } else {
+              let feather = {
+                title: mdInfo.title,
+                descript: mdInfo.descript,
+                path: item,
+                url: obj.name+obj.ext,
+                img: mdInfo.img,
+                imgs: mdInfo.imgs,
+                params: mdInfo.params,
+                filetype: 'file'
+              }
+              if (parent) {
+                feather.url = parentObj.url+'/'+feather.url
+                feather.parent = parent
+              }
+              tree.push(feather)
+            }
+
+
+            // 将home文件加入
+            if (parent) {
+              parentObj.home = home
+            }
+          }
+        }
+
+        if (stat.isDirectory()) {
 
           // 保留文件目录
-          if (stat.isDirectory() && parent=='root') {
-            if (reserveDir.indexOf(obj.name) >-1) {
+          if (parent == 'root') {
+            if (reserveDir.indexOf(obj.name) > -1) {
               continue;
             }
           }
-          
-          if (stat.isFile()) {
-            // const raw = fs.readFileSync(item, 'utf-8')
-            // const mdInfo = md(raw, {})
-  
-            // 目录描述图
-            if (['.jpg', '.jpeg', '.png', '.gif'].indexOf(obj.ext)>-1) {
-              if (obj.name.indexOf('index')>-1) {
-                home.img = home.img ? home.img.concat(item) : [].concat(item)
-              }
-            }
-  
-            // 目录配置文件
-            if (obj.name == 'config' && parent) {
-              parentObj.config = require(item)
-            }
-  
-            if (obj.ext == '.md') {
-              const mdInfo = that.file(item)
-              
-              // 目录首页
-              if (obj.name == 'index') {
-                const _obj = path.parse(obj.dir)
-                home.title = mdInfo.title||obj.name
-                home.descript = mdInfo.descript
-                home.path = item
-                home.url = _obj.name
-                home.img = home.img ? home.img : mdInfo.img
-                home.imgs = mdInfo.imgs
-                home.exist = true
-                home.params = mdInfo.params
-              } else {
-                let feather = {
-                  title: mdInfo.title,
-                  descript: mdInfo.descript,
-                  path: item,
-                  url: obj.name+obj.ext,
-                  img: mdInfo.img,
-                  imgs: mdInfo.imgs,
-                  params: mdInfo.params
-                }
-                if (parent) {
-                  feather.url = parentObj.url+'/'+feather.url
-                  feather.parent = parent
-                }
-                tree.push(feather)
-              }
-  
-  
-              // 将home文件加入
-              if (parent) {
-                parentObj.home = home
-              }
-            }
+
+          const parentId = _.uniqueId(obj.name+'_')
+          let dirFeather = {
+            title: obj.name,
+            path: item,
+            url: obj.name,
+            idf: parentId,
+            filetype: 'directory'
           }
-  
-          if (stat.isDirectory()) {
-            const parentId = _.uniqueId(obj.name+'_')
-            let dirFeather = {
-              title: obj.name,
-              path: item,
-              url: obj.name,
-              idf: parentId
-            }
-            if (parent) {
-              dirFeather.url = parentObj.url+'/'+dirFeather.url
-              dirFeather.parent = parent
-            }
-            tree.push(dirFeather)
-            loopDir(item, parentId, dirFeather)
+          if (parent) {
+            dirFeather.url = parentObj.url+'/'+dirFeather.url
+            dirFeather.parent = parent
           }
+          tree.push(dirFeather)
+          loopDir(item, parentId, dirFeather)
         }
-      } catch (error) {
-          
       }
       
     }

@@ -96,6 +96,7 @@ function renderMyDocs(ctx, opts={}){
     renderView('cover', renderData)
   } 
   else {
+    let isCover = true
     const {p3, p2, p1, id, title, cat} = params
     let _docurl = DOCS_RLA_ROOT
     if (cat) _docurl = path.join(_docurl, cat)
@@ -131,13 +132,23 @@ function renderMyDocs(ctx, opts={}){
         fileInfo = MarkdownIns.file(docurl)
       } 
       else if (stat.isDirectory()) {
+        if (folderInfo.tree.length > 1) {
+          folderInfo.tree.forEach(function(item) {
+            if (item.filetype == 'file') {
+              isCover = false
+            }
+          })
+        } else {
+          isCover = false
+        }
         // folderInfo = MarkdownIns.folder(caturl)
       } else {
         const _docurl = docurl+'.md'
-        const _stat = fs.statSync(_docurl)
-        if (_stat.isFile()) {
-          // folderInfo = MarkdownIns.folder(caturl)
-          fileInfo = MarkdownIns.file(docurl)
+        if (fs.existsSync(_docurl)) {
+          const _stat = fs.statSync(_docurl)
+          if (_stat.isFile()) {
+            fileInfo = MarkdownIns.file(docurl)
+          }
         }
       }
 
@@ -156,15 +167,26 @@ function renderMyDocs(ctx, opts={}){
       }
 
       if (folderInfo && !fileInfo) {
-        category(
-          folderInfo,
-          routePrefix, 
-          myurl, 
-          renderView, 
-          DOCS_ABS_ROOT, 
-          statics,
-          opts
-        )
+        if (isCover) {
+          const renderData = coversHome(
+            docurl,
+            routePrefix,
+            MarkdownIns,
+            statics,
+            opts
+          )
+          renderView('cover', renderData)
+        } else {
+          category(
+            folderInfo,
+            routePrefix, 
+            myurl, 
+            renderView, 
+            DOCS_ABS_ROOT, 
+            statics,
+            opts
+          )
+        }
       }
     }
   }

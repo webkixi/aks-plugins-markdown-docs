@@ -32,6 +32,7 @@ module.exports = function coversHome(
 ){
   const did = md5(docsRoot)
   const staticDid = 'statics_'+did
+  const isDocsRoot = options.src == docsRoot
   const _ctx = {
     docsRoot,
     routePrefix,
@@ -49,7 +50,8 @@ module.exports = function coversHome(
         if (cov.home){
           if (cov.home.img) {
             myExpoImg = cov.home.img[0]
-            myExpoImg = myExpoImg.indexOf('/') == 0 ? myExpoImg.replace(docsRoot, options&&options.imgsPublic) : myExpoImg
+            const replaceMent = isDocsRoot ? docsRoot : options.src
+            myExpoImg = myExpoImg.indexOf('/') == 0 ? myExpoImg.replace(replaceMent, (options && options.imgsPublic || '')) : myExpoImg
           }
         }
         return myExpoImg
@@ -68,7 +70,9 @@ module.exports = function coversHome(
           covDescripts = covConfigDescripts[cov.title] ? covConfigDescripts[cov.title] : covDescripts
         }
       }
-      cov.url = cov.url.replace(realyRootDir, '')
+      if (isDocsRoot) {
+        cov.url = cov.url.replace(realyRootDir, '')
+      }
       return {
         title: <img src={imgurl}/>,
         url: path.join(routePrefix, cov.url),

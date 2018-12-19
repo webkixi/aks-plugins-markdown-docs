@@ -8,16 +8,19 @@
     <%-mycss%>
   </head>
   <body>
-    <div class="sticky-container  animated-faster" id="sticky-container-1">
-      <div class="sticky-item" id="sticky-item">
-        <div data-reactroot="" class="navtop">
-          <div class="flex-row" style="height: 100%; width: auto;">
-            <a href="/docs"> <img src="/myimgs/logo.png"></a>
-            <!-- <a href="https://github.com/webkixi/aotoo-O"> <img src="/myimgs/github.png"></a> -->
+    <% block('page-header', function(){ %>
+      <div class="sticky-container  animated-faster" id="sticky-container-1">
+        <div class="sticky-item" id="sticky-item">
+          <div data-reactroot="" class="navtop">
+            <div class="flex-row" style="height: 100%; width: auto;">
+              <a href="/docs"> <img src="/myimgs/logo.png"></a>
+              <!-- <a href="https://github.com/webkixi/aotoo-O"> <img src="/myimgs/github.png"></a> -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <% }) %>
+
     
     <div class="docs-container">
       
@@ -45,9 +48,12 @@
 
     </div>
 
-    <div class="page-footer">
-      1234
-    </div>
+    <% block('page-footer', function(){ %>
+      <div class="page-footer">
+        
+      </div>
+    <% }) %>
+
     
     <%-myjs%>
 

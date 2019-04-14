@@ -1,6 +1,6 @@
 // var marked = require('marked')
 // var render = new marked.Renderer()
-var whiteListPropsAry = ['id', 'class', 'div', 'excute']
+var whiteListPropsAry = ['id', 'class', 'div', 'excute', 'target']
 var re = / *\{(.*?)\} *(?:\n+|$)/; // "fjdskg  {abc: xxx} {xyz: yyy}" 取 " {....}"
 var re_g = / *\{(.*)\}/g
 var re_g_test = /^(\*|\-).*(?=( *\{))/g
@@ -82,21 +82,61 @@ function whiteListProps (props, type) {
   return str
 }
 
+function parseStr2Json(str) {
+  let myary = []
+  if (typeof str == 'string') {
+    let ary = str.split(',')
+    ary.forEach((item, ii)=>{
+      if (item.indexOf(':')>-1) {
+        const [k, v] = item.split(':')
+        myary.push({ [k]: v.trim() })
+      }
+    })
+    const obj = myary.reduce((p, n)=>{
+      return Object.assign({}, p, n)
+    }, {})
+    return obj
+    // const keys = Object.keys(obj)
+    // keys.forEach((key, ii)=>{
+    //   if (ii==(keys.length-1)) {
+    //     mystring += `${key}=${obj[key]}`
+    //   } else {
+    //     mystring += `${key}=${obj[key]}&`
+    //   }
+    // })
+    // return mystring
+  }
+}
+
+// const transeCharactors = ['&#34;', '&#39;', '&#38;', '&#60;', '&#62;']
+// const realTranseCharactors = ['"', "'", '&', '<', '>']
+const transeCharactors = {
+  "&#34;": '"',
+  "&#39;": "'",
+  "&#38;": "&",
+  "&#60;": "<",
+  "&#62;": ">",
+}
 export default function(render) {
   render.link = function (href, title, text) {
     var config = {}
+    var retarget = /__ */
+    var reattr = / *\{(.*)\}$/
     var id = ''
     var cls = ''
 
-    if (this.options.sanitize) {
-      try {
-        var prot = decodeURIComponent(unescape(href)).replace(/[^\w:]/g, '').toLowerCase()
-      } catch (e) {
-        return
-      }
-      if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0) return
+    if (reattr.test(href)) {
+      href = href.replace(/(&#(34|39)+;)/g, '')
+      const tmp = href.match(reattr)
+      href = href.replace(tmp[1], '')
+      config = parseStr2Json(tmp[1])
     }
 
+    if (this.options.sanitize) {
+      var prot = decodeURIComponent(unescape(href)).replace(/[^\w:\/\.\-\#]/g, '').toLowerCase()
+      if (prot && (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0)) return
+    }
+    
     if (title) {
       if (title.indexOf(' {') > -1) {
         var rtn = customParse(title)
@@ -105,7 +145,12 @@ export default function(render) {
       } else config = {}
     }
 
-    var out = '<a' + whiteListProps(config) + ' href="' + href + '"'
+    if (retarget.test(prot)) {
+      prot = prot.replace(retarget, '')
+      config.target = '_blank'
+    }
+
+    var out = '<a' + whiteListProps(config) + ' href="' + prot + '"'
 
     if (title) {
       out += ' title="' + title + '"'
